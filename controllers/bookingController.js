@@ -55,7 +55,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 //   res.redirect(req.originalUrl.split('?')[0]);
 // });
 
-const createBookingCheckout = async (seesion) => {
+const createBookingCheckout = async (session) => {
   console.log('!!!!!!!IN CREATE BOOKING CHECKOUT!!!!!!!');
   const tour = session.client_reference_id;
   const user = (await User.findOne({ email: session.customer_email })).id;
