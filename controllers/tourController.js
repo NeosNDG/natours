@@ -59,8 +59,6 @@ exports.resizeTourImages = catchAsync(async (req, res, next) => {
     }),
   );
 
-  console.log(req.body.images);
-
   next();
 });
 
@@ -171,8 +169,6 @@ exports.getToursWithin = catchAsync(async (req, res, next) => {
       ),
     );
   }
-
-  console.log(radius);
 
   const tours = await Tour.find({
     startLocation: { $geoWithin: { $centerSphere: [[lng, lat], radius] } },
