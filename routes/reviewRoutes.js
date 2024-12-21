@@ -1,0 +1,36 @@
+const express = require('express');
+
+const reviewController = require('../controllers/reviewController');
+const authController = require('../controllers/authController');
+
+const router = express.Router({ mergeParams: true });
+// thanks to mergeParams: true
+// POST /tour/id/reviews and
+// GET /tour/id/reviews
+// POST /reviews
+// will both end up in the route right below
+
+router.use(authController.protect);
+router
+  .route('/')
+  .get(authController.protect, reviewController.getAllReviews)
+  .post(
+    authController.restrictTo('user'),
+    reviewController.setTourUserIds,
+    reviewController.createReview,
+  );
+
+router
+  .route('/:id')
+  .get(reviewController.getReview)
+  .patch(
+    authController.restrictTo('user', 'admin'),
+    reviewController.updateReview,
+  )
+  .delete(
+    authController.restrictTo('user', 'admin'),
+    authController.protect,
+    reviewController.deleteReview,
+  );
+
+module.exports = router;
